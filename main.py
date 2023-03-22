@@ -29,10 +29,13 @@ users = cursor.fetchall()
 for user in users:
     customer_id = user[3]
     print(f"{user[0]} {user[1]}")
-    mollie_customer = mollie.customers.update(customer_id, {
-        "name": f"{user[0]} {user[1]}",
-        "email": user[2]
-    })
+    try:
+        mollie_customer = mollie.customers.update(customer_id, {
+            "name": f"{user[0]} {user[1]}",
+            "email": user[2]
+        })
+    except Exception as e:
+        print(e)
 
 # Close database connection
 db.close()
