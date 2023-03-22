@@ -1,0 +1,9 @@
+mysql:
+  host: localhost
+  user: yourusername
+  password: yourpassword
+  database: yourdatabase
+  port: 3306
+
+mollie:
+  api_key: test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
