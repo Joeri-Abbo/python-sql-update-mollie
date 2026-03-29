@@ -1,8 +1,6 @@
 """Basic tests for the Mollie customer update script."""
-import sys
-import types
 import unittest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock
 
 
 SAMPLE_CONFIG = """
@@ -40,17 +38,7 @@ class TestCustomerUpdate(unittest.TestCase):
     """Test customer update logic with mocked dependencies."""
 
     def setUp(self):
-        # Mock mysql.connector
-        self.mock_mysql = MagicMock()
-        self.mock_conn = MagicMock()
-        self.mock_cursor = MagicMock()
-        self.mock_mysql.connect.return_value = self.mock_conn
-        self.mock_conn.cursor.return_value = self.mock_cursor
-
-        # Mock mollie client
         self.mock_mollie_client = MagicMock()
-        self.mock_mollie_module = MagicMock()
-        self.mock_mollie_module.api.client.Client.return_value = self.mock_mollie_client
 
     def test_users_fetched_and_updated(self):
         """Each user row should trigger a Mollie customer update."""
@@ -58,9 +46,7 @@ class TestCustomerUpdate(unittest.TestCase):
             ('Alice', 'Smith', 'alice@example.com', 'cst_001'),
             ('Bob', 'Jones', 'bob@example.com', 'cst_002'),
         ]
-        self.mock_cursor.fetchall.return_value = users
 
-        # Simulate the core update loop
         for user in users:
             customer_id = user[3]
             self.mock_mollie_client.customers.update(customer_id, {
